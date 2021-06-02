@@ -3,7 +3,6 @@ const app = express();
 const mongoose = require('mongoose');
 const Tweet = require('./modules/tweet');
 const morgan = require('morgan');
-const Joi = require('joi');
 const { tweetSchema } = require('./schemas');
 const asyncCatch = require('./helpers/AsyncCatch');
 const ExpressError = require('./helpers/ExpressErrors');
