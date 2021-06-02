@@ -1,1 +1,26 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const TweetSchema = new Schema({
+	text: {
+		type: String,
+		required: true,
+	},
+
+	username: {
+		type: String,
+		required: true,
+	},
+
+	likes: {
+		type: number,
+		default: 0,
+	},
+
+	time: {
+		type: Date,
+		default: Date.now,
+	},
+});
+
+module.exports = mongoose.model('Tweet', TweetSchema);
