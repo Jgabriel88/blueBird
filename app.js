@@ -34,6 +34,7 @@ const tweetValidation = (req, res, next) => {
 	}
 };
 
+//validates if a user has all the mandatory fields
 const userValidation = (req, res, next) => {
 	const { error } = userSchema.validate(req.body);
 	if (error) {
