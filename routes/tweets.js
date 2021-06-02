@@ -31,7 +31,8 @@ router.get(
 	'/:id',
 	asyncCatch(async (req, res, next) => {
 		const { id } = req.params;
-		const tweet = await Tweet.findById(id);
+		const tweet = await Tweet.findById(id).populate('author');
+		console.log('********', tweet);
 		res.send(tweet);
 	})
 );
@@ -43,7 +44,9 @@ router.post(
 	tweetValidation,
 	asyncCatch(async (req, res) => {
 		const tweet = new Tweet(req.body);
+		tweet.author = req.user._id;
 		await tweet.save();
+		req.user.tweets.push(tweet._id);
 		res.send(tweet);
 	})
 );
