@@ -5,6 +5,7 @@ const asyncCatch = require('../helpers/AsyncCatch');
 const ExpressError = require('../helpers/ExpressErrors');
 const User = require('../modules/user');
 const { userSchema } = require('../schemas'); //joi schema
+const users = require('../controllers/users');
 
 //validates if a user has all the mandatory fields
 const userValidation = (req, res, next) => {
@@ -18,19 +19,7 @@ const userValidation = (req, res, next) => {
 };
 
 //create a new user
-router.post(
-	'/register',
-	userValidation,
-	asyncCatch(async (req, res, next) => {
-		const { username, name, email, password } = req.body;
-		const user = new User({ name, email, username });
-		const newUser = await User.register(user, password);
-		req.login(newUser, (err) => {
-			if (err) return next(err);
-		});
-		res.send(newUser);
-	})
-);
+router.post('/register', userValidation, asyncCatch(users.createUser));
 
 //login with existent user
 router.post(
