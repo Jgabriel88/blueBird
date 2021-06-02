@@ -25,15 +25,21 @@ app.get('/tweets', async (req, res) => {
 
 //get a specific tweet
 app.get('/tweets/:id', async (req, res) => {
-	id = req.params.id;
+	const { id } = req.params;
 	const tweet = await Tweet.findById(id);
-	res.send(`${tweet}`);
+	res.send(tweet);
 });
 
 //create a new tweet
 app.post('/tweets', async (req, res) => {
 	const tweet = new Tweet(req.body);
 	await tweet.save();
+	res.send(tweet);
+});
+
+app.put('/tweets/:id', async (req, res) => {
+	const { id } = req.params;
+	const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
 	res.send(tweet);
 });
 
