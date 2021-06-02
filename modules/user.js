@@ -13,13 +13,6 @@ const UserSchema = new Schema({
 		required: true,
 		unique: true,
 	},
-
-	tweets: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Tweet',
-		},
-	],
 });
 UserSchema.plugin(passportLocalMongoose);
 
