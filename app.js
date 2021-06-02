@@ -37,10 +37,18 @@ app.post('/tweets', async (req, res) => {
 	res.send(tweet);
 });
 
+//edit a tweet
 app.put('/tweets/:id', async (req, res) => {
 	const { id } = req.params;
 	const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
 	res.send(tweet);
+});
+
+//delete a tweet
+app.delete('/tweets/:id', async (req, res) => {
+	const { id } = req.params;
+	await Tweet.findByIdAndDelete(id);
+	res.send(`Tweet id: ${id} DELETED!`);
 });
 
 app.listen(3000);
