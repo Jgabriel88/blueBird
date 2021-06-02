@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const Tweet = require('./modules/tweet');
 const morgan = require('morgan');
-const { tweetSchema } = require('./schemas');
+const { tweetSchema, userSchema } = require('./schemas');
 const asyncCatch = require('./helpers/AsyncCatch');
 const ExpressError = require('./helpers/ExpressErrors');
 
@@ -25,6 +25,16 @@ app.use(express.urlencoded({ extended: true }));
 //validates if a tweet has all the mandatory fields
 const tweetValidation = (req, res, next) => {
 	const { error } = tweetSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(',');
+		throw new ExpressError(msg, 400);
+	} else {
+		next();
+	}
+};
+
+const userValidation = (req, res, next) => {
+	const { error } = userSchema.validate(req.body);
 	if (error) {
 		const msg = error.details.map((el) => el.message).join(',');
 		throw new ExpressError(msg, 400);
