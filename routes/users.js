@@ -18,7 +18,7 @@ const userValidation = (req, res, next) => {
 
 //create a new user
 router.post(
-	'/',
+	'/register',
 	userValidation,
 	asyncCatch(async (req, res) => {
 		const password = req.body.password;
