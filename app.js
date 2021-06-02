@@ -3,7 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 const Tweet = require('./modules/tweet');
 const morgan = require('morgan');
+const Joi = require('joi');
 const asyncCatch = require('./helpers/AsyncCatch');
+const ExpressError = require('./helpers/ExpressErrors');
 
 mongoose.connect('mongodb://localhost:27017/bluebird', {
 	useNewUrlParser: true,
@@ -44,6 +46,18 @@ app.get(
 app.post(
 	'/tweets',
 	asyncCatch(async (req, res) => {
+		const tweetSchema = Joi.object({
+			text: Joi.string().required(),
+			username: Joi.string().required(),
+			likes: Joi.number().required().min(0),
+			time: Joi.date().required,
+		});
+
+		const { error } = tweetSchema.validate(req.body);
+		if (error) {
+			const msg = error.details.map((el) => el.message).join(',');
+			throw new ExpressError(msg, 400);
+		}
 		const tweet = new Tweet(req.body);
 		await tweet.save();
 		res.send(tweet);
@@ -71,12 +85,14 @@ app.delete(
 );
 
 //404 handler
-app.all('*', (req, res) => {
-	res.status(404).send('Page not found');
+app.all('*', (req, res, next) => {
+	next(new ExpressError('Page not Found', 404));
 });
 
+//error handler
 app.use((err, req, res, next) => {
-	res.send('Something went wrong');
+	const { statusCode = 500, message = 'Something went wrong' } = err;
+	res.status(statusCode).send(message);
 });
 
 app.listen(3000);
