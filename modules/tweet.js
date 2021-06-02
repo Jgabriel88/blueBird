@@ -13,7 +13,7 @@ const TweetSchema = new Schema({
 	},
 
 	likes: {
-		type: number,
+		type: Number,
 		default: 0,
 	},
 
