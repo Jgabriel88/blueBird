@@ -5,6 +5,7 @@ const ExpressError = require('../helpers/ExpressErrors');
 const Tweet = require('../modules/tweet');
 const { tweetSchema } = require('../schemas'); //joi schema
 const { isLoggedIn } = require('../middleware');
+const tweets = require('../controllers/tweets');
 
 //validates if a tweet has all the mandatory fields
 const tweetValidation = (req, res, next) => {
@@ -18,13 +19,7 @@ const tweetValidation = (req, res, next) => {
 };
 
 //get a list of all tweets
-router.get(
-	'/',
-	asyncCatch(async (req, res) => {
-		const tweets = await Tweet.find({});
-		res.send(`${tweets}`);
-	})
-);
+router.get('/', asyncCatch(tweets.index));
 
 //get a specific tweet
 router.get(
