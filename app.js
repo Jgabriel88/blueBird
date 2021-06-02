@@ -20,8 +20,25 @@ db.once('open', () => {
 });
 
 app.use(morgan('tiny'));
-
 app.use(express.urlencoded({ extended: true }));
+
+//validates if a tweet has all the mandatory fields
+const tweetValidation = (req, res, next) => {
+	const tweetSchema = Joi.object({
+		text: Joi.string().required(),
+		username: Joi.string().required(),
+		likes: Joi.number().required().min(0),
+		time: Joi.date().required,
+	});
+
+	const { error } = tweetSchema.validate(req.body);
+	if (error) {
+		const msg = error.details.map((el) => el.message).join(',');
+		throw new ExpressError(msg, 400);
+	} else {
+		next();
+	}
+};
 
 //get a list of all tweets
 app.get(
@@ -45,19 +62,8 @@ app.get(
 //create a new tweet
 app.post(
 	'/tweets',
+	tweetValidation,
 	asyncCatch(async (req, res) => {
-		const tweetSchema = Joi.object({
-			text: Joi.string().required(),
-			username: Joi.string().required(),
-			likes: Joi.number().required().min(0),
-			time: Joi.date().required,
-		});
-
-		const { error } = tweetSchema.validate(req.body);
-		if (error) {
-			const msg = error.details.map((el) => el.message).join(',');
-			throw new ExpressError(msg, 400);
-		}
 		const tweet = new Tweet(req.body);
 		await tweet.save();
 		res.send(tweet);
@@ -67,6 +73,7 @@ app.post(
 //edit a tweet
 app.put(
 	'/tweets/:id',
+	tweetValidation,
 	asyncCatch(async (req, res) => {
 		const { id } = req.params;
 		const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
