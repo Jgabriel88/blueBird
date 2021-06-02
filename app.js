@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Tweet = require('./modules/tweet');
+const morgan = require('morgan');
 
 mongoose.connect('mongodb://localhost:27017/bluebird', {
 	useNewUrlParser: true,
@@ -14,6 +15,8 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
 	console.log('connected to the database');
 });
+
+app.use(morgan('tiny'));
 
 app.use(express.urlencoded({ extended: true }));
 
