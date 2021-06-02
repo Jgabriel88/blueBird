@@ -21,9 +21,11 @@ router.post(
 	'/register',
 	userValidation,
 	asyncCatch(async (req, res) => {
-		const password = req.body.password;
-		const newUser = await User.register(req.body, password);
-		await newUser.save();
+		const { username, name, email, password } = req.body;
+
+		const user = new User({ name, email, username });
+		const newUser = await User.register(user, password);
+		// await newUser.save();
 		res.send(newUser);
 	})
 );
