@@ -11,6 +11,8 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
+const tweets = require('./routes/tweets');
+
 mongoose.connect('mongodb://localhost:27017/bluebird', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -42,17 +44,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//validates if a tweet has all the mandatory fields
-const tweetValidation = (req, res, next) => {
-	const { error } = tweetSchema.validate(req.body);
-	if (error) {
-		const msg = error.details.map((el) => el.message).join(',');
-		throw new ExpressError(msg, 400);
-	} else {
-		next();
-	}
-};
-
 //validates if a user has all the mandatory fields
 const userValidation = (req, res, next) => {
 	const { error } = userSchema.validate(req.body);
@@ -64,56 +55,7 @@ const userValidation = (req, res, next) => {
 	}
 };
 
-//get a list of all tweets
-app.get(
-	'/tweets',
-	asyncCatch(async (req, res) => {
-		const tweets = await Tweet.find({});
-		res.send(`${tweets}`);
-	})
-);
-
-//get a specific tweet
-app.get(
-	'/tweets/:id',
-	asyncCatch(async (req, res, next) => {
-		const { id } = req.params;
-		const tweet = await Tweet.findById(id);
-		res.send(tweet);
-	})
-);
-
-//create a new tweet
-app.post(
-	'/tweets',
-	tweetValidation,
-	asyncCatch(async (req, res) => {
-		const tweet = new Tweet(req.body);
-		await tweet.save();
-		res.send(tweet);
-	})
-);
-
-//edit a tweet
-app.put(
-	'/tweets/:id',
-	tweetValidation,
-	asyncCatch(async (req, res) => {
-		const { id } = req.params;
-		const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
-		res.send(tweet);
-	})
-);
-
-//delete a tweet
-app.delete(
-	'/tweets/:id',
-	asyncCatch(async (req, res) => {
-		const { id } = req.params;
-		await Tweet.findByIdAndDelete(id);
-		res.send(`Tweet id: ${id} DELETED!`);
-	})
-);
+app.use('/tweets', tweets);
 
 //create a new user
 app.post(
