@@ -21,11 +21,13 @@ const userValidation = (req, res, next) => {
 router.post(
 	'/register',
 	userValidation,
-	asyncCatch(async (req, res) => {
+	asyncCatch(async (req, res, next) => {
 		const { username, name, email, password } = req.body;
 		const user = new User({ name, email, username });
 		const newUser = await User.register(user, password);
-		// await newUser.save();
+		req.login(newUser, (err) => {
+			if (err) return next(err);
+		});
 		res.send(newUser);
 	})
 );
@@ -41,6 +43,10 @@ router.post(
 );
 
 router.get('/logout', (req, res) => {
+	if (!req.user) {
+		res.send('You are not logged.');
+		return;
+	}
 	req.logout();
 	res.send('Logged out.');
 });
