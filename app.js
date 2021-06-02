@@ -15,12 +15,24 @@ db.once('open', () => {
 	console.log('connected to the database');
 });
 
-app.get('/posttweet', async (req, res) => {
-	const tweet = new Tweet({
-		text: 'Test new tweet',
-		username: 'Gabriel',
-		likes: 25,
-	});
+app.use(express.urlencoded({ extended: true }));
+
+//get a list of all tweets
+app.get('/tweets', async (req, res) => {
+	const tweets = await Tweet.find({});
+	res.send(`${tweets}`);
+});
+
+//get a specific tweet
+app.get('/tweets/:id', async (req, res) => {
+	id = req.params.id;
+	const tweet = await Tweet.findById(id);
+	res.send(`${tweet}`);
+});
+
+//create a new tweet
+app.post('/tweets', async (req, res) => {
+	const tweet = new Tweet(req.body);
 	await tweet.save();
 	res.send(tweet);
 });
