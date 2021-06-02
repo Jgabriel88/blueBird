@@ -22,16 +22,7 @@ const tweetValidation = (req, res, next) => {
 router.get('/', asyncCatch(tweets.index));
 
 //get a specific tweet
-router.get(
-	'/:id',
-	asyncCatch(async (req, res, next) => {
-		const { id } = req.params;
-		const tweet = await Tweet.findById(id).populate('author');
-		console.log('********', tweet);
-		res.send(tweet);
-	})
-);
-
+router.get('/:id', asyncCatch(tweets.getTweetById));
 //create a new tweet
 router.post(
 	'/new',
@@ -42,7 +33,6 @@ router.post(
 
 //edit a tweet
 router.put('/:id/edit', tweetValidation, asyncCatch(tweets.editTweet));
-
 //delete a tweet
 router.delete('/:id', asyncCatch(tweets.deleteTweet));
 

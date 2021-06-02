@@ -24,3 +24,9 @@ module.exports.deleteTweet = async (req, res) => {
 	await Tweet.findByIdAndDelete(id);
 	res.send(`Tweet id: ${id} DELETED!`);
 };
+
+module.exports.getTweetById = async (req, res, next) => {
+	const { id } = req.params;
+	const tweet = await Tweet.findById(id).populate('author');
+	res.send(tweet);
+};
