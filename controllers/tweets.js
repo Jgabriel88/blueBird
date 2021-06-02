@@ -18,3 +18,9 @@ module.exports.editTweet = async (req, res) => {
 	const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
 	res.send(tweet);
 };
+
+module.exports.deleteTweet = async (req, res) => {
+	const { id } = req.params;
+	await Tweet.findByIdAndDelete(id);
+	res.send(`Tweet id: ${id} DELETED!`);
+};

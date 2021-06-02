@@ -44,13 +44,6 @@ router.post(
 router.put('/:id/edit', tweetValidation, asyncCatch(tweets.editTweet));
 
 //delete a tweet
-router.delete(
-	'/:id',
-	asyncCatch(async (req, res) => {
-		const { id } = req.params;
-		await Tweet.findByIdAndDelete(id);
-		res.send(`Tweet id: ${id} DELETED!`);
-	})
-);
+router.delete('/:id', asyncCatch(tweets.deleteTweet));
 
 module.exports = router;
