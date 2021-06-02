@@ -7,6 +7,9 @@ const morgan = require('morgan');
 const { tweetSchema, userSchema } = require('./schemas');
 const asyncCatch = require('./helpers/AsyncCatch');
 const ExpressError = require('./helpers/ExpressErrors');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 mongoose.connect('mongodb://localhost:27017/bluebird', {
 	useNewUrlParser: true,
@@ -21,7 +24,23 @@ db.once('open', () => {
 });
 
 app.use(morgan('tiny'));
+
+//session configuration
 app.use(express.urlencoded({ extended: true }));
+const sessionConfiguration = {
+	secret: 'secrettohardenerpassword',
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		httpOnly: true,
+	},
+};
+app.use(session(sessionConfiguration));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //validates if a tweet has all the mandatory fields
 const tweetValidation = (req, res, next) => {
@@ -101,9 +120,10 @@ app.post(
 	'/users',
 	userValidation,
 	asyncCatch(async (req, res) => {
-		const user = new User(req.body);
-		await user.save();
-		res.send(user);
+		const password = req.body.password;
+		const newUser = await User.register(req.body, password);
+		await newUser.save();
+		res.send(newUser);
 	})
 );
 
