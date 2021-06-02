@@ -1,5 +1,5 @@
-const router = require('express').Router();
-
+const express = require('express');
+const router = express.Router();
 const User = require('../models/User');
 
 router.post('/new', async (req, res) => {
@@ -14,7 +14,6 @@ router.post('/new', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
 	const id = req.params.id;
-
 	try {
 		const response = await User.findById(id);
 		res.json({ newId: response });

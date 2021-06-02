@@ -2,10 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const tweet = require('./api/tweet');
+const user = require('./api/user');
 const app = express();
 
 app.use(bodyParser.json());
 app.use('/tweet', tweet);
+app.use('/user', user);
 
 mongoose.connect('mongodb://localhost:27017/twitter', {
 	useNewUrlParser: true,

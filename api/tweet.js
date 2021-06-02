@@ -1,10 +1,11 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const Tweet = require('../models/Tweet');
 
 router.post('/new', async (req, res) => {
 	const data = req.body;
 	try {
-		const respose = await Tweet.insertMany(data);
+		const response = await Tweet.insertMany(data);
 		res.json({ newId: response._id });
 	} catch (err) {
 		res.json({ error: err });
@@ -14,7 +15,7 @@ router.post('/new', async (req, res) => {
 router.get('/:id', async (req, res) => {
 	const id = req.params.id;
 	try {
-		const respose = await Tweet.findById(id);
+		const response = await Tweet.findById(id);
 		res.json({ newId: response });
 	} catch (err) {
 		res.json({ error: err });
