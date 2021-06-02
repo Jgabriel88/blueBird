@@ -27,10 +27,14 @@ app.get('/tweets', async (req, res) => {
 });
 
 //get a specific tweet
-app.get('/tweets/:id', async (req, res) => {
-	const { id } = req.params;
-	const tweet = await Tweet.findById(id);
-	res.send(tweet);
+app.get('/tweets/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const tweet = await Tweet.findById(id);
+		res.send(tweet);
+	} catch (e) {
+		next(e);
+	}
 });
 
 //create a new tweet
@@ -52,6 +56,10 @@ app.delete('/tweets/:id', async (req, res) => {
 	const { id } = req.params;
 	await Tweet.findByIdAndDelete(id);
 	res.send(`Tweet id: ${id} DELETED!`);
+});
+
+app.use((err, req, res, next) => {
+	res.send('Something went wrong');
 });
 
 app.listen(3000);

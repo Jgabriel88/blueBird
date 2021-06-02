@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 const TweetSchema = new Schema({
 	text: {
 		type: String,
-		// required: true,
+		required: true,
 	},
 
 	username: {
 		type: String,
-		// required: true,
+		required: true,
 	},
 
 	likes: {
