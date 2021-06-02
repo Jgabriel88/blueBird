@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const Tweet = require('./modules/tweet');
+const User = require('./modules/user');
 const morgan = require('morgan');
 const { tweetSchema, userSchema } = require('./schemas');
 const asyncCatch = require('./helpers/AsyncCatch');
@@ -91,6 +92,17 @@ app.delete(
 		const { id } = req.params;
 		await Tweet.findByIdAndDelete(id);
 		res.send(`Tweet id: ${id} DELETED!`);
+	})
+);
+
+//create a new user
+app.post(
+	'/users',
+	userValidation,
+	asyncCatch(async (req, res) => {
+		const user = new User(req.body);
+		await user.save();
+		res.send(user);
 	})
 );
 

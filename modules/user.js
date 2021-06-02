@@ -16,6 +16,7 @@ const UserSchema = new Schema({
 	email: {
 		type: String,
 		required: true,
+		unique: true,
 	},
 
 	password: {
@@ -24,4 +25,4 @@ const UserSchema = new Schema({
 	},
 });
 
-module.exports = mongoose.model('Tweet', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
