@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost/bluebird', {
+mongoose.connect('mongodb://localhost/twiter', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
