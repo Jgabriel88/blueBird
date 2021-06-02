@@ -37,13 +37,7 @@ router.post(
 	'/new',
 	isLoggedIn,
 	tweetValidation,
-	asyncCatch(async (req, res) => {
-		const tweet = new Tweet(req.body);
-		tweet.author = req.user._id;
-		await tweet.save();
-		req.user.tweets.push(tweet._id);
-		res.send(tweet);
-	})
+	asyncCatch(tweets.createTweet)
 );
 
 //edit a tweet
