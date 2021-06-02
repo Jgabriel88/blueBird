@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use('/tweet', tweet);
 
-mongoose.connect('mongodb://localhost/twiter', {
+mongoose.connect('mongodb://localhost:27017/twitter', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost/twiter', {
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.once('open', () => {
 	console.log('connected to the database');
 });
 
