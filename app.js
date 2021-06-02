@@ -70,6 +70,11 @@ app.delete(
 	})
 );
 
+//404 handler
+app.all('*', (req, res) => {
+	res.status(404).send('Page not found');
+});
+
 app.use((err, req, res, next) => {
 	res.send('Something went wrong');
 });
