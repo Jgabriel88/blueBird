@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Tweet = require('./modules/tweet');
 const morgan = require('morgan');
 const Joi = require('joi');
+const { tweetSchema } = require('./schemas');
 const asyncCatch = require('./helpers/AsyncCatch');
 const ExpressError = require('./helpers/ExpressErrors');
 
@@ -24,13 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 
 //validates if a tweet has all the mandatory fields
 const tweetValidation = (req, res, next) => {
-	const tweetSchema = Joi.object({
-		text: Joi.string().required(),
-		username: Joi.string().required(),
-		likes: Joi.number().required().min(0),
-		time: Joi.date().required,
-	});
-
 	const { error } = tweetSchema.validate(req.body);
 	if (error) {
 		const msg = error.details.map((el) => el.message).join(',');
