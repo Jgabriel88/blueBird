@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const tweet = require('./api/tweet');
 const app = express();
-app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/twiter', {
+app.use(bodyParser.json());
+app.use('/tweet', tweet);
+
+mongoose.connect('mongodb://localhost/twiter', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
