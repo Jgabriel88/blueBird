@@ -41,15 +41,7 @@ router.post(
 );
 
 //edit a tweet
-router.put(
-	'/:id/edit',
-	tweetValidation,
-	asyncCatch(async (req, res) => {
-		const { id } = req.params;
-		const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
-		res.send(tweet);
-	})
-);
+router.put('/:id/edit', tweetValidation, asyncCatch(tweets.editTweet));
 
 //delete a tweet
 router.delete(

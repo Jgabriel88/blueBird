@@ -12,3 +12,9 @@ module.exports.createTweet = async (req, res) => {
 	req.user.tweets.push(tweet._id);
 	res.send(tweet);
 };
+
+module.exports.editTweet = async (req, res) => {
+	const { id } = req.params;
+	const tweet = await Tweet.findByIdAndUpdate(id, { ...req.body });
+	res.send(tweet);
+};
