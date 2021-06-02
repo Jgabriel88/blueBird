@@ -30,6 +30,7 @@ router.post(
 	})
 );
 
+//login with existent user
 router.post(
 	'/login',
 	passport.authenticate('local', console.log('Wrong credentials')),

@@ -4,6 +4,7 @@ const asyncCatch = require('../helpers/AsyncCatch');
 const ExpressError = require('../helpers/ExpressErrors');
 const Tweet = require('../modules/tweet');
 const { tweetSchema } = require('../schemas'); //joi schema
+const { isLoggedIn } = require('../middleware');
 
 //validates if a tweet has all the mandatory fields
 const tweetValidation = (req, res, next) => {
@@ -37,7 +38,8 @@ router.get(
 
 //create a new tweet
 router.post(
-	'/',
+	'/new',
+	isLoggedIn,
 	tweetValidation,
 	asyncCatch(async (req, res) => {
 		const tweet = new Tweet(req.body);
