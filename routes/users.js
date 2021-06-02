@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 const asyncCatch = require('../helpers/AsyncCatch');
 const ExpressError = require('../helpers/ExpressErrors');
@@ -22,12 +23,20 @@ router.post(
 	userValidation,
 	asyncCatch(async (req, res) => {
 		const { username, name, email, password } = req.body;
-
 		const user = new User({ name, email, username });
 		const newUser = await User.register(user, password);
 		// await newUser.save();
 		res.send(newUser);
 	})
+);
+
+router.post(
+	'/login',
+	passport.authenticate('local', console.log('Wrong credentials')),
+	(req, res) => {
+		res.send('LOGED');
+		console.log(`LOGGED as ${req.body.username}`);
+	}
 );
 
 module.exports = router;
