@@ -10,15 +10,14 @@ const ExpressError = require('./helpers/ExpressErrors');
 const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-
 const tweets = require('./routes/tweets');
+const users = require('./routes/users');
 
 mongoose.connect('mongodb://localhost:27017/bluebird', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
 });
-
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
@@ -37,6 +36,8 @@ const sessionConfiguration = {
 		httpOnly: true,
 	},
 };
+
+//autenthication handler
 app.use(session(sessionConfiguration));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -44,30 +45,9 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//validates if a user has all the mandatory fields
-const userValidation = (req, res, next) => {
-	const { error } = userSchema.validate(req.body);
-	if (error) {
-		const msg = error.details.map((el) => el.message).join(',');
-		throw new ExpressError(msg, 400);
-	} else {
-		next();
-	}
-};
-
+//endpoints middleware
 app.use('/tweets', tweets);
-
-//create a new user
-app.post(
-	'/users',
-	userValidation,
-	asyncCatch(async (req, res) => {
-		const password = req.body.password;
-		const newUser = await User.register(req.body, password);
-		await newUser.save();
-		res.send(newUser);
-	})
-);
+app.use('/users', users);
 
 //404 handler
 app.all('*', (req, res, next) => {
