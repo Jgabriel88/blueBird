@@ -1,4 +1,4 @@
-# blueBird
+# Bluebird
 
 Bluebird is an twitter backend clone
 
