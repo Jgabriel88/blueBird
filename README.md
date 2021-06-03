@@ -5,6 +5,7 @@ Bluebird is an twitter backend clone
 ## Behavioural Requirements
 
 - User can create a new user with a single username and email
+- User can login with a existent username and password
 - A logged user can create, remove, update, and delete a tweet
 - A logged user can logout
 
