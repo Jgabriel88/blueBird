@@ -64,6 +64,6 @@ npm start
 
 ![Create Tweet Without Being Logged in](https://github.com/Jgabriel88/blueBird/blob/main/images/errorUserNotLogged.png?raw=true)
 
-![Register User Without All Mandatory Fields]()(https://github.com/Jgabriel88/blueBird/blob/main/images/errorUserNotLogged.png?raw=true)
+![Register User Without All Mandatory Fields](https://github.com/Jgabriel88/blueBird/blob/main/images/errorMandatoryField2.png?raw=true)
 
-![Logout Without Being Logged in ]()(https://github.com/Jgabriel88/blueBird/blob/main/images/errorUserNotLogged.png?raw=true)
+![Logout Without Being Logged in ](https://github.com/Jgabriel88/blueBird/blob/main/images/errorLogoutNotLogged.png?raw=true)
