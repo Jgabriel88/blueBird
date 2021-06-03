@@ -37,3 +37,33 @@ The [Bluebird](https://github.com/Jgabriel88/blueBird) backend application creat
 ```
 npm start
 ```
+
+## API Test
+
+### User
+
+![User Registration](https://github.com/Jgabriel88/blueBird/blob/main/images/userRegistration.png?raw=true)
+
+![User Login](https://github.com/Jgabriel88/blueBird/blob/main/images/login.png?raw=true)
+
+![User Logout](https://github.com/Jgabriel88/blueBird/blob/main/images/logout.png?raw=true)
+
+### Tweet
+
+![New Tweet](https://github.com/Jgabriel88/blueBird/blob/main/images/newTweet.png?raw=true)
+
+![Edit Tweet](https://github.com/Jgabriel88/blueBird/blob/main/images/editTweetIncreaseLike.png?raw=true)
+
+![Delete Tweet](https://github.com/Jgabriel88/blueBird/blob/main/images/deleteTweet.png?raw=true)
+
+![View Tweet](https://github.com/Jgabriel88/blueBird/blob/main/images/viewSpecificTweet.png?raw=true)
+
+### Error Handling
+
+![Create Tweet Without All Mandatory Fields](https://github.com/Jgabriel88/blueBird/blob/main/images/errorMandatoryField.png?raw=true)
+
+![Create Tweet Without Being Logged in](https://github.com/Jgabriel88/blueBird/blob/main/images/errorUserNotLogged.png?raw=true)
+
+![Register User Without All Mandatory Fields]()(https://github.com/Jgabriel88/blueBird/blob/main/images/errorUserNotLogged.png?raw=true)
+
+![Logout Without Being Logged in ]()(https://github.com/Jgabriel88/blueBird/blob/main/images/errorUserNotLogged.png?raw=true)
